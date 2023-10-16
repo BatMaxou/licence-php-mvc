@@ -12,7 +12,6 @@ session_start();
 if (isset($_GET['page']) && !empty($_GET['page'])) {
     $params = explode('/', $_GET['page']);
 
-
     if ($params[0] !== '') {
         $controller = $params[0];
         $action = isset($params[1]) ? $params[1] : 'list';
