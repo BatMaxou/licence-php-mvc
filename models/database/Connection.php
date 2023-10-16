@@ -16,12 +16,3 @@ function connexion()
 
     return $connexion;
 }
-
-// Example:
-// $pdo = connexion();
-// $ins = $pdo->prepare("select * from test order by id");
-// $ins->setFetchMode(PDO::FETCH_ASSOC);
-// $ins->execute();
-// $tab = $ins->fetchAll();
-
-// dd($tab);

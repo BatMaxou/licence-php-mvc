@@ -9,35 +9,37 @@ define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
 
 session_start();
 
-// dd($_SERVER['REQUEST_URI']);
+$uri = explode('/', $_SERVER['REQUEST_URI']);
+$uri = parseExplodeUrl($uri);
 
-if (isset($_GET['page']) && !empty($_GET['page'])) {
-    $params = explode('/', $_GET['page']);
+if (isset($uri[1]) && !empty($uri[1])) {
+    $controller = $uri[1];
+    $controllerFile = ROOT . '../controllers/' . ucfirst($controller) . 'Controller.php';
 
-    if ($params[0] !== '') {
-        $controller = $params[0];
-        $action = isset($params[1]) ? $params[1] : 'list';
-        $controllerFile = ROOT . '../controllers/' . ucfirst($controller) . 'Controller.php';
+    if (file_exists($controllerFile)) {
+        require_once($controllerFile);
 
-        if (file_exists($controllerFile)) {
-            require_once($controllerFile);
-
+        $action = $uri[2] ?: false;
+        if ($action) {
             if (function_exists($action)) {
-                if (isset($params[2])) {
-                    $action($params[2]);
-                } else {
-                    $action();
-                }
+                isset($uri[3]) ? $action($uri[3]) : $action();
+            } elseif (intval($action)) {
+                view($action);
             } else {
                 header('HTTP/1.0 404 Not Found');
-                require_once('../views/errors/404.html');
+                require_once('../views/errors/404.php');
             }
+        } elseif (function_exists('all')) {
+            all();
         } else {
             header('HTTP/1.0 404 Not Found');
-            require_once('../views/errors/404.html');
+            require_once('../views/errors/404.php');
         }
     } else {
-        require_once('../controllers/HomeController.php');
-        home();
+        header('HTTP/1.0 404 Not Found');
+        require_once('../views/errors/404.php');
     }
+} else {
+    require_once('../controllers/HomeController.php');
+    home();
 }

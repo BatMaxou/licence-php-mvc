@@ -1,3 +1,24 @@
 pre {
-    background-color: black;
+    background-color: $black;
+    padding: 25px;
+    color: $flashyPurple;
+
+    p {
+        margin: 0 0 0 25px;
+        padding: 0;
+    }
+
+    .array {
+        .array {
+            margin-left: 25px;
+        }
+    }
+
+    .key {
+        color: $flashyOrange;
+    }
+
+    .value {
+        color: $flashyGreen;
+    }
 }
