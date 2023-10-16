@@ -9,6 +9,8 @@ define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
 
 session_start();
 
+// dd($_SERVER['REQUEST_URI']);
+
 if (isset($_GET['page']) && !empty($_GET['page'])) {
     $params = explode('/', $_GET['page']);
 

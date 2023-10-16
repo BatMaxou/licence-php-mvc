@@ -29,3 +29,10 @@ function dd($value)
     echo '</pre>';
     die;
 }
+
+function verifyConnection()
+{
+    if (!isset($_SESSION['login'])) {
+        header('Location: /?page=/');
+    }
+}
