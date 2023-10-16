@@ -19,7 +19,7 @@ Dev une app web basé sur l'archi MVC avec système d'authentification.
 
 ## Gestion des films
 
-- Ajout d'un film à la liste d'un utilisateur (
+- Ajout d'un film à la liste d'un utilisateur
     - titre
     - réalisateur
     - synopsis
@@ -27,7 +27,7 @@ Dev une app web basé sur l'archi MVC avec système d'authentification.
     - scénariste
     - société de production
     - année de sortie
-)
+
 - Modification d'un film par son l'utilisateur
 - Accéder au détail d'un film
 - Supprimer un film de sa liste
