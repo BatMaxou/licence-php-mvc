@@ -6,3 +6,5 @@ VALUES
 ('Inception', 'Christopher Nolan', 'Inception synopsis', 'Action', 'John Hughes', 'Warner Bros', '2010-07-16', 1),
 ('Pulp Fiction', 'Quentin Tarantino', 'Pulp Fiction synopsis', 'Adventure', 'David Fincher', 'Paramount Pictures', '1994-10-14', 1),
 ('The Wolf of Wall Street', 'Martin Scorsese', 'The Wolf of Wall Street synopsis', 'Comedy', 'David Fincher', 'Paramount Pictures', '2013-12-25', 1);
+
+INSERT INTO list(user, movie) VALUES(1, 1), (1, 2), (1, 3);

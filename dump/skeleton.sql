@@ -24,3 +24,11 @@ CREATE TABLE movie(
     PRIMARY KEY (id),
     FOREIGN KEY (user) REFERENCES user(id)
 );
+
+CREATE TABLE list(
+    user INT NOT NULL,
+    movie INT NOT NULL,
+    PRIMARY KEY (user, movie),
+    FOREIGN KEY (user) REFERENCES user(id),
+    FOREIGN KEY (movie) REFERENCES movie(id)
+)
