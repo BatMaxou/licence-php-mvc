@@ -14,10 +14,10 @@
         foreach ($movies as $movie) {
             echo '
                 <div>
-                    <h2>' . $movie['title'] . '</h2>
-                    <p>' . $movie['type'] . '</p>
-                    <a href="/movies/' . $movie['id'] . '">Voir le film</a>
-                    <a href="/movies/update/' . $movie['id'] . '">Modifier le film</a>
+                    <h2>' . $movie->getTitle() . '</h2>
+                    <p>' . $movie->getType . '</p>
+                    <a href="/movies/' . $movie->getId() . '">Voir le film</a>
+                    <a href="/movies/update/' . $movie->getId() . '">Modifier le film</a>
                 </div>
             ';
         }

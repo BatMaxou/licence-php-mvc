@@ -1,18 +1,30 @@
 <?php
 
-function connexion()
+class Connection
 {
-    $host = "db";
-    $user = "root";
-    $pass = "root";
-    $dbName = "php_mvc";
+    private const HOST = 'db';
+    private const USER = 'root';
+    private const PASS = 'root';
+    private const DBNAME = 'php_mvc';
 
-    try {
-        $connexion = new PDO('mysql:host=' . $host . ';dbname=' . $dbName, $user, $pass);
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        dd('Echec de connexion' . $e->getMessage());
+    private static ?PDO $connection = null;
+
+    public static function connect()
+    {
+        if (!self::$connection) {
+            try {
+                self::$connection = new PDO('mysql:host=' . self::HOST . ';dbname=' . self::DBNAME, self::USER, self::PASS);
+                self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                dd('Echec de connexion' . $e->getMessage());
+            }
+        }
+
+        return self::$connection;
     }
 
-    return $connexion;
+    public static function disconnect()
+    {
+        self::$connection = null;
+    }
 }

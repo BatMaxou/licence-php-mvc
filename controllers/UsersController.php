@@ -1,27 +1,30 @@
 <?php
 
+require_once(ROOT . '../models/repository/UserRepository.php');
+
 function add()
 {
-    $connection = connexion();
-    $user = [
-        'login' => '',
-        'password' => '',
-    ];
+    $user = new User('', '');
     $submitValue = 'S\'inscrire';
     $error = '';
 
     if (empty($_POST)) {
         require_once('../views/users/add.php');
     } else {
-        $query = $connection->prepare('SELECT * FROM user WHERE login=:login;');
-        $query->bindValue('login', $_POST['login']);
-        $query->execute();
-        $result = $query->fetch();
+        $user->setLogin($_POST['login'])
+            ->setPassword($_POST['password']);
 
+        $tryUser = UserRepository::getByLogin($_POST['login']);
         $passed = true;
 
-        if ('' === $_POST['login'] || $result) {
+        if ('' === $user->getLogin()) {
             $passed = false;
+            $error = 'L\'identifiant ne peut être vide';
+        }
+
+        if ($tryUser) {
+            $passed = false;
+            $error = 'Identifiant déjà utilisé';
         }
 
         if (
@@ -33,19 +36,20 @@ function add()
             || str_contains($_POST['password'], $_POST['login'])
         ) {
             $passed = false;
+            if ('' === $error) {
+                $error .= 'L';
+            } else {
+                $error .= ', l';
+            }
+
+            $error .= "e mot de passe doit contenir au moins 8 caractères, 1 minuscule, 1 majuscule et 1 caractère spécial";
         }
 
         if ($passed) {
-            $query = $connection->prepare('INSERT INTO user(login, password) VALUES (:login, :password);');
-            $query->bindValue('login', $_POST['login']);
-            $query->bindValue('password', password_hash($_POST['password'], PASSWORD_ARGON2I));
-            $query->execute();
-            $result = $query->fetch();
+            UserRepository::create($user);
 
             header('Location: /users/login');
         } else {
-            $user = $_POST;
-            $error = 'Veuillez remplir tous les champs';
             require_once('../views/users/add.php');
         }
     }
@@ -53,29 +57,26 @@ function add()
 
 function login()
 {
-    $connection = connexion();
-    $user = [
-        'login' => '',
-        'password' => '',
-    ];
+
+    $baseUser = new User('', '');
+
     $submitValue = 'Se connecter';
     $error = '';
 
     if (empty($_POST)) {
+        $user = $baseUser;
+
         require_once('../views/users/login.php');
     } else {
-        $query = $connection->prepare('SELECT * FROM user WHERE login=:login;');
-        $query->bindValue('login', $_POST['login']);
-        $query->execute();
-        $result = $query->fetch();
+        $user = UserRepository::getByLogin($_POST['login']);
 
-        if ($result && password_verify($_POST['password'], $result['password'])) {
-            $_SESSION['login'] = $result['login'];
-            $_SESSION['id'] = $result['id'];
+        if ($user && password_verify($_POST['password'], $user->getPassword())) {
+            $_SESSION['user'] = $user;
             header('Location: /movies/my-list');
         } else {
-            $user = $_POST;
+            $user = $baseUser;
             $error = 'Mauvais identifiants';
+
             require_once('../views/users/login.php');
         }
     }

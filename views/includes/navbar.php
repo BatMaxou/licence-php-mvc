@@ -2,7 +2,7 @@
     <ul>
         <li><a href="/">Accueil</a></li>
         <?php
-        if (isset($_SESSION['login'])) {
+        if (isset($_SESSION['user'])) {
             echo '
                 <li><a href="/movies">Liste des films</a></li>
                 <li><a href="/movies/my-list">Ma liste</a></li>

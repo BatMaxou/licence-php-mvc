@@ -7,16 +7,27 @@ function presentArray(array $array, string $arrayKey = null): void
     }
 
     if ($arrayKey) {
-        echo "<div class='array'><span class='key'>" . $arrayKey . " : </span> [";
+        echo "<div style='
+            margin-left: 25px;
+        '><span style='
+            color: #ff9900;
+        '>" . $arrayKey . " : </span> [";
     } else {
-        echo "<div class='array'>array [";
+        echo "<div>array [";
     }
 
     foreach ($array as $key => $value) {
         if (is_array($value)) {;
             presentArray($value, $key);
         } else {
-            echo '<p><span class="key">' . $key . ' : </span>' . '<span class="value">' . $value . "</span></p>";
+            echo '<p style="
+                margin: 0 0 0 25px;
+                padding: 0;
+            "><span style="
+                color: #ff9900;
+            ">' . $key . ' : </span>' . '<span style="
+                color: #00ff00;
+            ">' . $value . "</span></p>";
         }
     }
     echo "]</div>";
@@ -24,7 +35,11 @@ function presentArray(array $array, string $arrayKey = null): void
 
 function dd($value)
 {
-    echo '<pre><div class="dump">';
+    echo '<pre style="
+        background-color: #111;
+        padding: 25px;
+        color: #9900ff;
+    ">';
     if ('array' === gettype($value)) {
         presentArray($value);
     } elseif ('string' === gettype($value) || 'int' === gettype($value)) {
@@ -32,13 +47,13 @@ function dd($value)
     } else {
         var_dump($value);
     }
-    echo '</div></pre>';
+    echo '</pre>';
     die;
 }
 
-function verifyConnection()
+function verifyAuthentification()
 {
-    if (!isset($_SESSION['login'])) {
+    if (!isset($_SESSION['user'])) {
         header('Location: /');
     }
 }

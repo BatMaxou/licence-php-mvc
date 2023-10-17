@@ -2,8 +2,7 @@
 
 require_once '../models/database/Connection.php';
 require_once '../models/base_functions/BaseFunctions.php';
-
-$pdo = connexion();
+require_once '../models/entity/User.php';
 
 define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
 
@@ -19,7 +18,7 @@ if (isset($uri[1]) && !empty($uri[1])) {
     if (file_exists($controllerFile)) {
         require_once($controllerFile);
 
-        $action = $uri[2] ?: false;
+        $action = $uri[2] ?? false;
         if ($action) {
             if (function_exists($action)) {
                 isset($uri[3]) ? $action($uri[3]) : $action();

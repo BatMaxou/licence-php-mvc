@@ -1,47 +1,32 @@
 <?php
 
+require_once(ROOT . '../models/repository/MovieRepository.php');
+
 function all()
 {
-    $connection = connexion();
-
-    verifyConnection();
-
-    $query = $connection->prepare('SELECT * FROM movie');
-    $query->setFetchMode(PDO::FETCH_ASSOC);
-    $query->execute();
-    $movies = $query->fetchAll();
+    $movies = MovieRepository::getAll();
 
     require_once('../views/movies/all.php');
 }
 
 function myList()
 {
-    $connection = connexion();
     $error = '';
 
-    verifyConnection();
+    verifyAuthentification();
 
-    $query = $connection->prepare('SELECT * FROM movie WHERE user=:id;');
-    $query->bindValue('id', $_SESSION['id']);
-    $query->setFetchMode(PDO::FETCH_ASSOC);
-    $query->execute();
-    $movies = $query->fetchAll();
+    $movies = MovieRepository::getAllbyUser($_SESSION['user']);
 
     require_once('../views/movies/myList.php');
 }
 
 function view(int $id)
 {
-    $connection = connexion();
     $error = '';
 
-    verifyConnection();
+    verifyAuthentification();
 
-    $query = $connection->prepare('SELECT * FROM movie WHERE id=:id;');
-    $query->bindValue('id', $id);
-    $query->setFetchMode(PDO::FETCH_ASSOC);
-    $query->execute();
-    $movie = $query->fetch();
+    $movie = MovieRepository::getById($id);
 
     require_once('../views/movies/view.php');
 }
@@ -49,10 +34,9 @@ function view(int $id)
 
 function add()
 {
-    $connection = connexion();
     $error = '';
 
-    verifyConnection();
+    verifyAuthentification();
 
     if (empty($_POST)) {
         require_once('../views/movies/add.php');
@@ -68,20 +52,21 @@ function add()
         ) {
             $movie = $_POST;
             $error = 'Veuillez remplir tous les champs';
+
             require_once('../views/movies/add.php');
         } else {
-            $query = $connection->prepare("INSERT INTO movie(title, director, synopsis, type, scriptwriter, production_company, release_date, user) VALUES (:title, :director, :synopsis, :type, :scriptwriter, :production_company, :release_date, :user);");
+            $movie = new Movie(
+                $_POST['title'],
+                $_POST['director'],
+                $_POST['synopsis'],
+                $_POST['type'],
+                $_POST['scriptwriter'],
+                $_POST['production_company'],
+                $_POST['release_date'],
+                $_SESSION['user']
+            );
 
-            $query->bindValue('title', $_POST['title']);
-            $query->bindValue('director', $_POST['director']);
-            $query->bindValue('synopsis', $_POST['synopsis']);
-            $query->bindValue('type', $_POST['type']);
-            $query->bindValue('scriptwriter', $_POST['scriptwriter']);
-            $query->bindValue('production_company', $_POST['production_company']);
-            $query->bindValue('release_date', $_POST['release_date']);
-            $query->bindValue('user', $_SESSION['id']);
-
-            $query->execute();
+            MovieRepository::create($movie);
 
             header('Location: /movies/all');
         }
@@ -90,16 +75,11 @@ function add()
 
 function update(int $id)
 {
-    $connection = connexion();
     $error = '';
 
-    verifyConnection();
+    verifyAuthentification();
 
-    $query = $connection->prepare('SELECT * FROM movie WHERE id=:id;');
-    $query->bindValue('id', $id);
-    $query->setFetchMode(PDO::FETCH_ASSOC);
-    $query->execute();
-    $movie = $query->fetch();
+    $movie = MovieRepository::getById($id);
 
     if (empty($_POST)) {
         require_once('../views/movies/update.php');
@@ -115,47 +95,12 @@ function update(int $id)
         ) {
             $movie = $_POST;
             $error = 'Veuillez remplir tous les champs';
+
             require_once('../views/movies/update.php');
         } else {
-            $query = $connection->prepare("UPDATE movie SET title=:title, director=:director, synopsis=:synopsis, type=:type, scriptwriter=:scriptwriter, production_company=:production_company, release_date=:release_date WHERE id=:id;)");
-
-            $query->bindValue('title', $_POST['title']);
-            $query->bindValue('director', $_POST['director']);
-            $query->bindValue('synopsis', $_POST['synopsis']);
-            $query->bindValue('type', $_POST['type']);
-            $query->bindValue('scriptwriter', $_POST['scriptwriter']);
-            $query->bindValue('production_company', $_POST['production_company']);
-            $query->bindValue('release_date', $_POST['release_date']);
-            $query->bindValue('id', $movie['id']);
-
-            $query->execute();
+            MovieRepository::update($movie);
 
             header('Location: /movies/all');
         }
-    }
-}
-
-function delete(int $id)
-{
-    $connection = connexion();
-
-    verifyConnection();
-
-    $query = $connection->prepare('SELECT * FROM movie WHERE id=:id;');
-    $query->bindValue('id', $id);
-    $query->setFetchMode(PDO::FETCH_ASSOC);
-    $query->execute();
-    $movie = $query->fetch();
-
-    if (empty($_POST)) {
-        require_once('../views/movies/delete.php');
-    } else {
-        $query = $connection->prepare("DELETE FROM movie WHERE id=:id;)");
-
-        $query->bindValue('id', $movie['id']);
-
-        $query->execute();
-
-        header('Location: /movies/all');
     }
 }
