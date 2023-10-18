@@ -9,7 +9,7 @@
     <?php require_once(ROOT . '../views/includes/navbar.php'); ?>
 
     <section id="movies">
-        <h1><?php echo $title ?></h1>
+        <h2><?php echo $title ?></h2>
         <div>
             <h2>Informations générales</h2>
             <p>Réalisé par : <?php echo $movie->getDirector() ?></p>

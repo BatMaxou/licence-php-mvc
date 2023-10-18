@@ -11,7 +11,7 @@ $title = 'Supprimer un film';
     <?php require_once(ROOT . '../views/includes/navbar.php'); ?>
 
     <section id="movies-delete">
-        <h1><?php echo $title ?></h1>
+        <h2><?php echo $title ?></h2>
         <p>Êtes-vous sûr de vouloir supprimer ce film ?</p>
         <form action="" method="POST">
             <input name="id" type="hidden" value="<?php echo $movie->getId() ?>" />

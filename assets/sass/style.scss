@@ -1,2 +1,10 @@
 @import 'variables';
 @import 'base';
+
+@import 'components/navbar';
+@import 'components/dot';
+@import 'components/card';
+@import 'components/button';
+
+@import 'pages/home';
+@import 'pages/my-list';

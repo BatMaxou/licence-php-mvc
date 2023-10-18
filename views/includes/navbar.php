@@ -1,6 +1,6 @@
-<nav>
-    <img src='images/logo.png ' />
-    <ul>
+<nav class="navbar">
+    <img src='/images/logo.png' alt="logo" class="logo" />
+    <ul class="menu">
         <li><a href="/">Accueil</a></li>
         <?php
         if (isset($_SESSION['user'])) {
@@ -17,10 +17,10 @@
         }
         ?>
     </ul>
-    <p>
+    <p class="connected-user">
         <?php
         if (isset($_SESSION['user'])) {
-            echo '<span class="dot-green"</span> ' . $_SESSION['user']->getLogin();
+            echo '<span class="dot-green"></span> ' . $_SESSION['user']->getLogin();
         }
         ?>
     </p>

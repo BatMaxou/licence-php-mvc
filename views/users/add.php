@@ -9,7 +9,7 @@
     <?php require_once(ROOT . '../views/includes/navbar.php'); ?>
 
     <section id="register">
-        <h1>Inscription</h1>
+        <h2>Inscription</h2>
         <?php require_once(ROOT . '../views/includes/forms/userForm.php') ?>
         <p><?php echo $error ?></p>
     </section>

@@ -7,7 +7,7 @@
 
 <body>
     <?php require_once(ROOT . '../views/includes/navbar.php') ?>
-    <h1>Erreur :</h1>
+    <h2>Erreur :</h2>
     <p><?php echo $error ?></p>
 </body>
 

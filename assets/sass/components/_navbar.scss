@@ -1,0 +1,23 @@
+.navbar {
+    border-bottom: 2px $orange solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+
+    .logo {
+        height: 80px;
+    }
+
+    .menu {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .connected-user {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+}
