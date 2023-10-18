@@ -13,7 +13,8 @@ CREATE TABLE user(
 
 CREATE TABLE movie(
     id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    cover BLOB,
     director VARCHAR(255) NOT NULL,
     synopsis TEXT NOT NULL,
     type VARCHAR(255) NOT NULL,
@@ -30,5 +31,5 @@ CREATE TABLE list(
     movie INT NOT NULL,
     PRIMARY KEY (user, movie),
     FOREIGN KEY (user) REFERENCES user(id),
-    FOREIGN KEY (movie) REFERENCES movie(id)
+    FOREIGN KEY (movie) REFERENCES movie(id) ON DELETE CASCADE
 )

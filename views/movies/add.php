@@ -11,12 +11,11 @@ $submitValue = 'Ajouter';
 <body>
     <?php require_once(ROOT . '../views/includes/navbar.php'); ?>
 
-    <section id="movies-add">
+    <section id="movie-add">
         <h1><?php echo $title ?></h1>
 
         <?php require_once(ROOT . '../views/includes/forms/movieForm.php'); ?>
-
-        <p><?php $error ?></p>
+        <p><?php echo $error ?></p>
     </section>
 </body>
 

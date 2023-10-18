@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Movie.php';
+
 class User
 {
     private int $id;

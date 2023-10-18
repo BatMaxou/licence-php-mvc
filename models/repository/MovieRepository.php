@@ -12,24 +12,52 @@ class MovieRepository
         $query = $connection->prepare('SELECT * FROM movie');
         $query->setFetchMode(PDO::FETCH_ASSOC);
         $query->execute();
-        $movies = $query->fetchAll();
 
         Connection::disconnect();
+
+        $movies = [];
+        foreach ($query->fetchAll() as $arrayMovie) {
+            $movies[] = new Movie(
+                $arrayMovie['title'],
+                $arrayMovie['director'],
+                $arrayMovie['synopsis'],
+                $arrayMovie['type'],
+                $arrayMovie['scriptwriter'],
+                $arrayMovie['production_company'],
+                $arrayMovie['release_date'],
+                UserRepository::getById($arrayMovie['user']),
+                $arrayMovie['id']
+            );
+        }
 
         return $movies;
     }
 
-    public static function getAllbyUser(User $user): array
+    public static function getListbyUser(User $user): array
     {
         $connection = Connection::connect();
 
-        $query = $connection->prepare('SELECT * FROM movie WHERE user=:id;');
+        $query = $connection->prepare('SELECT m.* FROM list l, movie m, user u WHERE l.user = u.id AND l.movie = m.id AND u.id=:id;');
         $query->bindValue('id', $user->getId());
         $query->setFetchMode(PDO::FETCH_ASSOC);
         $query->execute();
-        $movies = $query->fetchAll();
 
         Connection::disconnect();
+
+        $movies = [];
+        foreach ($query->fetchAll() as $arrayMovie) {
+            $movies[] = new Movie(
+                $arrayMovie['title'],
+                $arrayMovie['director'],
+                $arrayMovie['synopsis'],
+                $arrayMovie['type'],
+                $arrayMovie['scriptwriter'],
+                $arrayMovie['production_company'],
+                $arrayMovie['release_date'],
+                UserRepository::getById($arrayMovie['user']),
+                $arrayMovie['id']
+            );
+        }
 
         return $movies;
     }
@@ -94,6 +122,17 @@ class MovieRepository
         $query->bindValue('production_company', $movie->getProductionCompany());
         $query->bindValue('release_date', $movie->getReleaseDate());
         $query->bindValue('id', $movie->getId());
+        $query->execute();
+
+        Connection::disconnect();
+    }
+
+    public static function delete(int $id)
+    {
+        $connection = Connection::connect();
+
+        $query = $connection->prepare('DELETE FROM movie WHERE id=:id;');
+        $query->bindValue('id', $id);
         $query->execute();
 
         Connection::disconnect();

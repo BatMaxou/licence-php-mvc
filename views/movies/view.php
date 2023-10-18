@@ -19,7 +19,6 @@
             <p>Une production de : <?php echo $movie->getProductionCompany() ?></p>
             <h2>Synopsis</h2>
             <p><?php echo $movie->getSynopsis() ?></p>
-            <a href="/movies/update/<?php echo $movie->getId() ?>">Modifier le film</a>
         </div>
     </section>
 </body>

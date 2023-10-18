@@ -1,106 +1,169 @@
 <?php
 
+require_once(ROOT . '../models/repository/UserRepository.php');
 require_once(ROOT . '../models/repository/MovieRepository.php');
 
-function all()
+class MoviesController
 {
-    $movies = MovieRepository::getAll();
+    public function all()
+    {
+        verifyAuthentification();
 
-    require_once('../views/movies/all.php');
-}
+        $movies = MovieRepository::getAll();
+        $listedMovies = MovieRepository::getListbyUser($_SESSION['user']);
 
-function myList()
-{
-    $error = '';
+        require_once(ROOT . '../views/movies/all.php');
+    }
 
-    verifyAuthentification();
+    public function myList()
+    {
+        $error = '';
 
-    $movies = MovieRepository::getAllbyUser($_SESSION['user']);
+        verifyAuthentification();
 
-    require_once('../views/movies/myList.php');
-}
+        $movies = MovieRepository::getListbyUser($_SESSION['user']);
 
-function view(int $id)
-{
-    $error = '';
+        require_once(ROOT . '../views/movies/myList.php');
+    }
 
-    verifyAuthentification();
+    public function view(?string $id = null)
+    {
+        if (!verifyArguments([['value' => $id, 'isInt' => true]])) {
+            return;
+        }
 
-    $movie = MovieRepository::getById($id);
+        $error = '';
 
-    require_once('../views/movies/view.php');
-}
+        verifyAuthentification();
+
+        $movie = MovieRepository::getById($id);
+
+        require_once(ROOT . '../views/movies/view.php');
+    }
 
 
-function add()
-{
-    $error = '';
+    public function add()
+    {
+        $error = '';
+        $movie = new Movie('', '', '', '', '', '', '', new User('', ''));
 
-    verifyAuthentification();
+        verifyAuthentification();
 
-    if (empty($_POST)) {
-        require_once('../views/movies/add.php');
-    } else {
-        if (
-            '' === $_POST['title']
-            || '' === $_POST['director']
-            || '' === $_POST['synopsis']
-            || '' === $_POST['type']
-            || '' === $_POST['scriptwriter']
-            || '' === $_POST['production_company']
-            || '' === $_POST['release_date']
-        ) {
-            $movie = $_POST;
-            $error = 'Veuillez remplir tous les champs';
 
-            require_once('../views/movies/add.php');
+        if (empty($_POST)) {
+            require_once(ROOT . '../views/movies/add.php');
         } else {
-            $movie = new Movie(
-                $_POST['title'],
-                $_POST['director'],
-                $_POST['synopsis'],
-                $_POST['type'],
-                $_POST['scriptwriter'],
-                $_POST['production_company'],
-                $_POST['release_date'],
-                $_SESSION['user']
-            );
+            if (
+                '' === $_POST['title']
+                || '' === $_POST['director']
+                || '' === $_POST['synopsis']
+                || '' === $_POST['type']
+                || '' === $_POST['scriptwriter']
+                || '' === $_POST['production_company']
+                || '' === $_POST['release_date']
+            ) {
+                $movie = new Movie(
+                    $_POST['title'],
+                    $_POST['director'],
+                    $_POST['synopsis'],
+                    $_POST['type'],
+                    $_POST['scriptwriter'],
+                    $_POST['production_company'],
+                    $_POST['release_date'],
+                    new User('', '')
+                );
 
-            MovieRepository::create($movie);
+                $error = 'Veuillez remplir tous les champs';
 
-            header('Location: /movies/all');
+                require_once(ROOT . '../views/movies/add.php');
+            } else {
+                $movie = new Movie(
+                    $_POST['title'],
+                    $_POST['director'],
+                    $_POST['synopsis'],
+                    $_POST['type'],
+                    $_POST['scriptwriter'],
+                    $_POST['production_company'],
+                    $_POST['release_date'],
+                    $_SESSION['user']
+                );
+                MovieRepository::create($movie);
+                header('Location: /movies/all');
+            }
         }
     }
-}
 
-function update(int $id)
-{
-    $error = '';
+    public function update(?string $id = null)
+    {
+        if (!verifyArguments([['value' => $id, 'isInt' => true]])) {
+            return;
+        }
 
-    verifyAuthentification();
+        $error = '';
 
-    $movie = MovieRepository::getById($id);
+        verifyAuthentification();
 
-    if (empty($_POST)) {
-        require_once('../views/movies/update.php');
-    } else {
-        if (
-            '' === $_POST['title']
-            || '' === $_POST['director']
-            || '' === $_POST['synopsis']
-            || '' === $_POST['type']
-            || '' === $_POST['scriptwriter']
-            || '' === $_POST['production_company']
-            || '' === $_POST['release_date']
-        ) {
-            $movie = $_POST;
-            $error = 'Veuillez remplir tous les champs';
+        $movie = MovieRepository::getById($id);
 
-            require_once('../views/movies/update.php');
+        if (!$movie) {
+            header('HTTP/1.0 404 Not Found');
+            require_once(ROOT . '../views/errors/404.php');
+
+            return;
+        }
+
+        if (empty($_POST)) {
+            require_once(ROOT . '../views/movies/update.php');
         } else {
-            MovieRepository::update($movie);
+            if (
+                '' === $_POST['title']
+                || '' === $_POST['director']
+                || '' === $_POST['synopsis']
+                || '' === $_POST['type']
+                || '' === $_POST['scriptwriter']
+                || '' === $_POST['production_company']
+                || '' === $_POST['release_date']
+            ) {
+                $movie = $_POST;
+                $error = 'Veuillez remplir tous les champs';
 
-            header('Location: /movies/all');
+                require_once(ROOT . '../views/movies/update.php');
+            } else {
+                MovieRepository::update($movie);
+
+                header('Location: /movies/all');
+            }
+        }
+    }
+
+    public function delete(?string $id = null)
+    {
+        if (!verifyArguments([['value' => $id, 'isInt' => true]])) {
+            return;
+        }
+
+        verifyAuthentification();
+
+        $movie = MovieRepository::getById($id);
+
+        if (!$movie) {
+            header('HTTP/1.0 404 Not Found');
+            require_once(ROOT . '../views/errors/404.php');
+
+            return;
+        }
+
+        if ($_SESSION['user']->getId() === $movie->getCreator()->getId()) {
+            if (!empty($_POST) && isset($_POST['id'])) {
+                MovieRepository::delete((int) $_POST['id']);
+                header('Location: /movies/all');
+            }
+
+            require_once(ROOT . '../views/movies/delete.php');
+        } else {
+            $error = 'Vous n\'avez pas le droit de supprimer ce film';
+
+            require_once(ROOT . '../views/errors/other.php');
         }
     }
 }

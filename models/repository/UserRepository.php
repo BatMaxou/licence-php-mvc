@@ -51,4 +51,50 @@ class UserRepository
 
         Connection::disconnect();
     }
+
+    public static function addMovie(Movie $movie): void
+    {
+        $connection = Connection::connect();
+
+        $query = $connection->prepare('SELECT * FROM list WHERE user=:userId AND movie=:movieId;');
+        $query->bindValue('userId', $_SESSION['user']->getId());
+        $query->bindValue('movieId', $movie->getId());
+        $query->execute();
+
+        if ($query->fetch()) {
+            Connection::disconnect();
+
+            return;
+        }
+
+        $query = $connection->prepare('INSERT INTO list VALUES (:userId, :movieId);');
+        $query->bindValue('userId', $_SESSION['user']->getId());
+        $query->bindValue('movieId', $movie->getId());
+        $query->execute();
+
+        Connection::disconnect();
+    }
+
+    public static function removeMovie(Movie $movie): void
+    {
+        $connection = Connection::connect();
+
+        $query = $connection->prepare('SELECT * FROM list WHERE user=:userId AND movie=:movieId;');
+        $query->bindValue('userId', $_SESSION['user']->getId());
+        $query->bindValue('movieId', $movie->getId());
+        $query->execute();
+
+        if (!$query->fetch()) {
+            Connection::disconnect();
+
+            return;
+        }
+
+        $query = $connection->prepare('DELETE FROM list WHERE user=:userId AND movie=:movieId;');
+        $query->bindValue('userId', $_SESSION['user']->getId());
+        $query->bindValue('movieId', $movie->getId());
+        $query->execute();
+
+        Connection::disconnect();
+    }
 }

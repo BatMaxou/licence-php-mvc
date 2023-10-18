@@ -1,5 +1,5 @@
 <form action="" method="POST">
-    <input name="title" type="text" placeholder="Titre" value="<?php echo $movie->getTitle() ?>" />
+    <input type="text" placeholder="Titre" name="title" value="<?php echo $movie->getTitle() ?>" />
     <input type="text" placeholder="Réalisateur" name="director" value="<?php echo $movie->getDirector() ?>" />
     <textarea name="synopsis" placeholder="Synopsis"><?php echo $movie->getSynopsis() ?></textarea>
     <input type="text" placeholder="Genre" name="type" value="<?php echo $movie->getType() ?>" />
