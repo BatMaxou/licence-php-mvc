@@ -11,7 +11,7 @@ $submitValue = 'Modifier un film';
 <body>
     <?php require_once(ROOT . '../views/includes/navbar.php'); ?>
 
-    <section id="movies-update">
+    <section id="movie-update">
         <h2><?php echo $title ?></h2>
         <?php require_once(ROOT . '../views/includes/forms/movieForm.php'); ?>
         <p class="error"><?php echo $error ?></p>

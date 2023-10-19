@@ -1,20 +1,40 @@
 .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     border: 2px $orange solid;
-    width: 19%;
-    padding: 1%;
+    width: 21%;
     border-radius: 10px;
     margin: 15px 0;
+    padding: 20px 0;
+    overflow: hidden;
+
+    .card-header {
+        text-align: center;
+    }
+
+    img {
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 1000px) {
     .card {
-        width: 27%;
+        width: 29%;
     }
 }
 
 @media (max-width: 650px) {
     .card {
-        width: 44%;
+        width: 46%;
     }
 }
 

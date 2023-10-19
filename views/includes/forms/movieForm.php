@@ -1,10 +1,32 @@
-<form action="" method="POST">
-    <input type="text" placeholder="Titre" name="title" value="<?php echo $movie->getTitle() ?>" />
-    <input type="text" placeholder="Réalisateur" name="director" value="<?php echo $movie->getDirector() ?>" />
-    <textarea name="synopsis" placeholder="Synopsis"><?php echo $movie->getSynopsis() ?></textarea>
-    <input type="text" placeholder="Genre" name="type" value="<?php echo $movie->getType() ?>" />
-    <input type="text" placeholder="Scénariste" name="scriptwriter" value="<?php echo $movie->getScriptwriter() ?>" />
-    <input type="text" placeholder="Société de production" name="production_company" value="<?php echo $movie->getProductionCompany() ?>" />
-    <input name="release_date" type="date" value="<?php echo $movie->getReleaseDate() ?>" />
-    <input type="submit" value="<?php echo $submitValue ?>"></input>
-</form>
+<div class="form-container">
+    <form action="" method="POST" enctype="multipart/form-data" class="form">
+        <div class="input-group">
+            <input type="text" placeholder="Titre" name="title" value="<?php echo $movie->getTitle() ?>" />
+        </div>
+        <div class="input-group">
+            <input type="text" placeholder="Réalisateur" name="director" value="<?php echo $movie->getDirector() ?>" />
+        </div>
+        <div class="textarea-group">
+            <textarea name="synopsis" placeholder="Synopsis" rows="5"><?php echo $movie->getSynopsis() ?></textarea>
+        </div>
+        <div class=" input-group">
+            <input type="text" placeholder="Genre" name="type" value="<?php echo $movie->getType() ?>" />
+        </div>
+        <div class="input-group">
+            <input type="text" placeholder="Scénariste" name="scriptwriter" value="<?php echo $movie->getScriptwriter() ?>" />
+        </div>
+        <div class="input-group">
+            <input type="text" placeholder="Société de production" name="production_company" value="<?php echo $movie->getProductionCompany() ?>" />
+        </div>
+        <div class="input-group">
+            <input type="date" name="release_date" value="<?php echo $movie->getReleaseDate() ?>" />
+        </div>
+        <div class="input-file-group">
+            <label for="cover">Affiche :</label>
+            <input type="file" name="cover" />
+        </div>
+        <div class="submit-group">
+            <input type="submit" value="<?php echo $submitValue ?>"></input>
+        </div>
+    </form>
+</div>

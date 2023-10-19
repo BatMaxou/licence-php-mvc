@@ -15,21 +15,37 @@
             foreach ($movies as $movie) {
                 echo '
                     <div class="card">
-                        <h3>' . $movie->getTitle() . '</h3>
-                        <p>' . $movie->getType() . '</p>
-                        <img src="" />
-                        <a href="/movies/' . $movie->getId() . '">Voir</a>
+                        <div class="card-header">
+                            <h3>' . $movie->getTitle() . '</h3>
+                            <p>' . $movie->getType() . '</p>
+                        </div>
                 ';
 
-                if ($_SESSION['user']->getId() === $movie->getCreator()->getId()) {
+                if ($movie->getCover()) {
                     echo '
-                        <a href="/movies/update/' . $movie->getId() . '">Modifier</a>
-                        <a href="/movies/delete/' . $movie->getId() . '">Supprimer</a>
+                            <img src="data:image/png;base64,' . base64_encode($movie->getCover()) . '" />
+                    ';
+                } else {
+                    echo '
+                            <img src="/images/no-cover.png" />
                     ';
                 }
 
                 echo '
-                        <a href="/list/delete/' . $movie->getId() . '">Retirer de ma liste</a>
+                        <div class="card-actions">
+                            <a href="/movies/' . $movie->getId() . '">Voir</a>
+                ';
+
+                if ($_SESSION['user']->getId() === $movie->getCreator()->getId()) {
+                    echo '
+                            <a href="/movies/update/' . $movie->getId() . '">Modifier</a>
+                            <a href="/movies/delete/' . $movie->getId() . '">Supprimer</a>
+                    ';
+                }
+
+                echo '
+                            <a href="/list/delete/' . $movie->getId() . '">Retirer de ma liste</a>
+                        </div>
                     </div>
                 ';
             }
