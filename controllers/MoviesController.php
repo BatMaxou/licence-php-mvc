@@ -87,6 +87,11 @@ class MoviesController
                     $_POST['release_date'],
                     $_SESSION['user']
                 );
+
+                if (isset($_FILES['cover']) && isset($_FILES['cover']['tmp_name']) && '' !== $_FILES['cover']['tmp_name']) {
+                    $movie->setCover(file_get_contents($_FILES['cover']['tmp_name']));
+                }
+
                 MovieRepository::create($movie);
                 header('Location: /movies/all');
             }
@@ -129,8 +134,11 @@ class MoviesController
 
                 require_once(ROOT . '../views/movies/update.php');
             } else {
-                MovieRepository::update($movie);
+                if (isset($_FILES['cover']) && isset($_FILES['cover']['tmp_name']) && '' !== $_FILES['cover']['tmp_name']) {
+                    $movie->setCover(file_get_contents($_FILES['cover']['tmp_name']));
+                }
 
+                MovieRepository::update($movie);
                 header('Location: /movies/all');
             }
         }
