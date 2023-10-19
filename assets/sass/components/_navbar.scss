@@ -11,13 +11,25 @@
 
     .menu {
         display: flex;
+        width: 100%;
         align-items: center;
         gap: 20px;
+        margin-left: 40px;
     }
 
     .connected-user {
-        display: flex;
-        align-items: center;
-        gap: 5px;
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -10px;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 5px;
+            background-color: $flashyGreen;
+            border-radius: 10px;
+        }
     }
 }

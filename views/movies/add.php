@@ -15,7 +15,7 @@ $submitValue = 'Ajouter';
         <h2><?php echo $title ?></h2>
 
         <?php require_once(ROOT . '../views/includes/forms/movieForm.php'); ?>
-        <p><?php echo $error ?></p>
+        <p class="error"><?php echo $error ?></p>
     </section>
 </body>
 

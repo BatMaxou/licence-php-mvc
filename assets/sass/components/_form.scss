@@ -1,0 +1,61 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+
+    .form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 80%;
+
+        .input-group,
+        .textarea-group,
+        .submit-group {
+            margin: 20px 10px;
+
+            input,
+            textarea {
+                padding: 10px;
+                border-radius: 10px;
+            }
+        }
+
+        .input-group {
+            width: 50%;
+
+            input {
+                max-width: 400px;
+                width: 80%;
+                color: $white;
+                background-color: transparent;
+                border: none;
+                border-bottom: 2px $orange solid;
+
+                &:focus {
+                    border-color: $white;
+                    outline: none;
+                }
+            }
+        }
+
+        .textarea-group {
+            width: 100%;
+
+            textarea {
+                width: 100%;
+            }
+        }
+
+        .submit-group {
+            width: 100%;
+
+            input {
+                max-width: 400px;
+                width: 80%;
+                color: $white;
+                background-color: transparent;
+                border: 2px $orange solid;
+            }
+        }
+    }
+}

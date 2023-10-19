@@ -17,7 +17,7 @@
         }
         ?>
     </ul>
-    <p class="connected-user">
+    <p <?php echo isset($_SESSION['user']) ? 'class="connected-user"' : '' ?>>
         <?php
         if (isset($_SESSION['user'])) {
             echo '<span class="dot-green"></span> ' . $_SESSION['user']->getLogin();
