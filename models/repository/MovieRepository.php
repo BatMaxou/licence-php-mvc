@@ -17,7 +17,7 @@ class MovieRepository
 
         $movies = [];
         foreach ($query->fetchAll() as $arrayMovie) {
-            $movies[] = new Movie(
+            $movie = new Movie(
                 $arrayMovie['title'],
                 $arrayMovie['director'],
                 $arrayMovie['synopsis'],
@@ -28,6 +28,8 @@ class MovieRepository
                 UserRepository::getById($arrayMovie['user']),
                 $arrayMovie['id']
             );
+
+            $movies[] = $movie->setCover($arrayMovie['cover']);
         }
 
         return $movies;
@@ -46,7 +48,7 @@ class MovieRepository
 
         $movies = [];
         foreach ($query->fetchAll() as $arrayMovie) {
-            $movies[] = new Movie(
+            $movie = new Movie(
                 $arrayMovie['title'],
                 $arrayMovie['director'],
                 $arrayMovie['synopsis'],
@@ -57,6 +59,8 @@ class MovieRepository
                 UserRepository::getById($arrayMovie['user']),
                 $arrayMovie['id']
             );
+
+            $movies[] = $movie->setCover($arrayMovie['cover']);
         }
 
         return $movies;
@@ -70,22 +74,24 @@ class MovieRepository
         $query->bindValue('id', $id);
         $query->setFetchMode(PDO::FETCH_ASSOC);
         $query->execute();
-        $movie = $query->fetch();
+        $arrayMovie = $query->fetch();
 
         Connection::disconnect();
 
-        if ($movie) {
-            return new Movie(
-                $movie['title'],
-                $movie['director'],
-                $movie['synopsis'],
-                $movie['type'],
-                $movie['scriptwriter'],
-                $movie['production_company'],
-                $movie['release_date'],
-                UserRepository::getById($movie['user']),
-                $movie['id']
+        if ($arrayMovie) {
+            $movie = new Movie(
+                $arrayMovie['title'],
+                $arrayMovie['director'],
+                $arrayMovie['synopsis'],
+                $arrayMovie['type'],
+                $arrayMovie['scriptwriter'],
+                $arrayMovie['production_company'],
+                $arrayMovie['release_date'],
+                UserRepository::getById($arrayMovie['user']),
+                $arrayMovie['id']
             );
+
+            return $movie->setCover($arrayMovie['cover']);
         }
 
         return null;
@@ -95,7 +101,7 @@ class MovieRepository
     {
         $connection = Connection::connect();
 
-        $query = $connection->prepare('INSERT INTO movie (title, director, synopsis, type, scriptwriter, production_company, release_date, user) VALUES (:title, :director, :synopsis, :type, :scriptwriter, :production_company, :release_date, :user);');
+        $query = $connection->prepare('INSERT INTO movie (title, director, synopsis, type, scriptwriter, production_company, release_date, user, cover) VALUES (:title, :director, :synopsis, :type, :scriptwriter, :production_company, :release_date, :user, :cover);');
         $query->bindValue('title', $movie->getTitle());
         $query->bindValue('director', $movie->getDirector());
         $query->bindValue('synopsis', $movie->getSynopsis());
@@ -104,8 +110,9 @@ class MovieRepository
         $query->bindValue('production_company', $movie->getProductionCompany());
         $query->bindValue('release_date', $movie->getReleaseDate());
         $query->bindValue('user', $movie->getCreator()->getId());
-        $query->execute();
+        $query->bindValue('cover', $movie->getCover());
 
+        $query->execute();
         Connection::disconnect();
     }
 
@@ -113,7 +120,7 @@ class MovieRepository
     {
         $connection = Connection::connect();
 
-        $query = $connection->prepare('UPDATE movie SET title=:title, director=:director, synopsis=:synopsis, type=:type, scriptwriter=:scriptwriter, production_company=:production_company, release_date=:release_date WHERE id=:id;');
+        $query = $connection->prepare('UPDATE movie SET title=:title, director=:director, synopsis=:synopsis, type=:type, scriptwriter=:scriptwriter, production_company=:production_company, release_date=:release_date, cover=:cover WHERE id=:id;');
         $query->bindValue('title', $movie->getTitle());
         $query->bindValue('director', $movie->getDirector());
         $query->bindValue('synopsis', $movie->getSynopsis());
@@ -121,6 +128,7 @@ class MovieRepository
         $query->bindValue('scriptwriter', $movie->getScriptwriter());
         $query->bindValue('production_company', $movie->getProductionCompany());
         $query->bindValue('release_date', $movie->getReleaseDate());
+        $query->bindValue('cover', $movie->getCover());
         $query->bindValue('id', $movie->getId());
         $query->execute();
 

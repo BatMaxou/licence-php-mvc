@@ -13,6 +13,7 @@ class Movie
     private string $production_company;
     private string $release_date;
     private User $creator;
+    private ?string $cover = null;
 
     public function __construct(string $title, string $director, string $synopsis, string $type, string $scriptwriter, string $production_company, string $release_date, User $creator, ?int $id = null)
     {
@@ -75,6 +76,11 @@ class Movie
         return $this->creator;
     }
 
+    public function getCover(): ?string
+    {
+        return $this->cover;
+    }
+
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -131,21 +137,10 @@ class Movie
         return $this;
     }
 
-    public static function save(Movie $movie): void
+    public function setCover(?string $cover): self
     {
-        $connection = Connection::connect();
+        $this->cover = $cover;
 
-        $query = $connection->prepare('INSERT INTO movie(title, director, synopsis, type, scriptwriter, production_company, release_date, user) VALUES (:title, :director, :synopsis, :type, :scriptwriter, :production_company, :release_date, :user);');
-        $query->bindValue('title', $movie->getTitle());
-        $query->bindValue('director', $movie->getDirector());
-        $query->bindValue('synopsis', $movie->getSynopsis());
-        $query->bindValue('type', $movie->getType());
-        $query->bindValue('scriptwriter', $movie->getScriptwriter());
-        $query->bindValue('production_company', $movie->getProductionCompany());
-        $query->bindValue('release_date', $movie->getReleaseDate());
-        $query->bindValue('user', $movie->getCreator()->getId());
-        $query->execute();
-
-        Connection::disconnect();
+        return $this;
     }
 }
