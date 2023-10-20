@@ -25,6 +25,7 @@
             <label for="cover">Affiche :</label>
             <input type="file" name="cover" />
         </div>
+        <input type="hidden" name="id" value="<?php echo $movie->getId() ?? '' ?>" />
         <div class="submit-group">
             <input type="submit" value="<?php echo $submitValue ?>"></input>
         </div>

@@ -13,6 +13,7 @@
         <div class="container">
             <?php
             foreach ($movies as $movie) {
+                dump($movie->getCover());
                 echo '
                     <div class="card">
                         <div class="card-header">
@@ -33,19 +34,19 @@
 
                 echo '
                         <div class="card-actions">
-                            <a href="/movies/' . $movie->getId() . '">Voir</a>
+                            <a href="/movies/' . $movie->getId() . '" class="btn-in-link"><div class="btn btn-default">Voir</div></a>
                 ';
 
                 if (!in_array($movie, $listedMovies)) {
                     echo '
-                        <a href="/list/add/' . $movie->getId() . '">Ajouter à ma liste</a>
+                        <a href="/list/add/' . $movie->getId() . '" class="btn-in-link"><div class="btn btn-success">Ajouter à ma liste</div></a>
                     ';
                 }
 
                 if ($_SESSION['user']->getId() === $movie->getCreator()->getId()) {
                     echo '
-                            <a href="/movies/update/' . $movie->getId() . '">Modifier</a>
-                            <a href="/movies/delete/' . $movie->getId() . '">Supprimer</a>
+                            <a href="/movies/update/' . $movie->getId() . '" class="btn-in-link"><div class="btn btn-edit">Modifier</div></a>
+                            <a href="/movies/delete/' . $movie->getId() . '" class="btn-in-link"><div class="btn btn-danger">Supprimer</div></a>
                     ';
                 }
 

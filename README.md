@@ -1,35 +1,61 @@
-# Faire une application MVC
+# PHP_MVC Film
 
-## Objectif
+## Prerequisites
 
-Dev une app web basé sur l'archi MVC avec système d'authentification.
+You must have docker installed on your machine.
 
-## Authentification
+## Installation
 
-- Mettre en place un système d'inscription et de connexion pour les utilisateurs
-- Utiliser des mots de passe hashés et des sessions pour gérer l'authentification
-- Le mot de passe doit être soumis à un regex:
-    - 8 caractères minimum, majuscule, minuscule, chiffre, caractère spécial
-    - le mdp ne doit pas contenir le nom de l'utilisateur
+### Clone the repository
 
-## Tableau de bord
+```
+git@github.com:BatMaxou/licence-php-mvc.git
+```
 
-- Après le connexion, afficher un tableau de bord avec la liste des films de l'utilisateur
-- Afficher le nom de l'utilisateur et un lien pour se déconnecter dans la nav
+### Go to the project folder
 
-## Gestion des films
+```
+cd licence-php-mvc
+```
 
-- Ajout d'un film à la liste d'un utilisateur
-    - titre
-    - réalisateur
-    - synopsis
-    - genre
-    - scénariste
-    - société de production
-    - année de sortie
+### Init the submodules
 
-- Modification d'un film par son l'utilisateur
-- Accéder au détail d'un film
-- Supprimer un film de sa liste
-- [Bonus] le film à une affiche (blob en BDD)
-- [Bonus] l'utilisateur peut rechercher un film
+```
+git submodule update --init
+```
+
+### Put the wanted port into the docker-compose.override.yaml file
+
+```yaml
+version: "3"
+
+services:
+  web:
+    ports:
+      - %your-port%:80
+```
+
+### Build the docker image
+
+```
+docker-compose up -d
+```
+
+### Databse
+
+```
+docker-compose exec -T db mysql -uroot -proot < dump/skeleton.sql
+```
+
+### FIxtures
+
+- Load fixtures
+```
+docker-compose exec -T db mysql -uroot -proot php_mvc < dump/fixtures.sql
+```
+
+- Add images of the /public/images/fixtures file from the website with the admin account (login: admin, password: admin)
+
+### Access the website
+
+Go to http://localhost:%your-port%

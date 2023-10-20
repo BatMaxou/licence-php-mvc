@@ -72,4 +72,18 @@
             }
         }
     }
+
+    .check-form {
+        display: flex;
+        margin: 25px;
+        gap: 20px;
+
+        input {
+            width: 144px;
+            padding: 20px;
+            line-height: 2px;
+            color: $white;
+            cursor: pointer;
+        }
+    }
 }

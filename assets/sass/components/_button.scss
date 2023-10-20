@@ -1,0 +1,42 @@
+.btn {
+    width: 120px;
+    height: 40px;
+    border: 2px $orange solid;
+    border-radius: 10px;
+    background-color: transparent;
+    padding-inline: 10px;
+
+    &-default {
+        &:hover {
+            background-color: $orange;
+        }
+    }
+
+    &-success {
+        &:hover {
+            background-color: $green;
+            border-color: $green;
+        }
+    }
+
+    &-danger {
+        &:hover {
+            background-color: $red;
+            border-color: $red;
+        }
+    }
+
+    &-warning {
+        &:hover {
+            background-color: $yellow;
+            border-color: $yellow;
+        }
+    }
+
+    &-edit {
+        &:hover {
+            background-color: $blue;
+            border-color: $blue;
+        }
+    }
+}
