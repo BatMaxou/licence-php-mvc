@@ -134,6 +134,18 @@ class MoviesController
 
                 require_once(ROOT . '../views/movies/update.php');
             } else {
+                $movie = new Movie(
+                    $_POST['title'],
+                    $_POST['director'],
+                    $_POST['synopsis'],
+                    $_POST['type'],
+                    $_POST['scriptwriter'],
+                    $_POST['production_company'],
+                    $_POST['release_date'],
+                    $_SESSION['user'],
+                    $_POST['id']
+                );
+
                 if (isset($_FILES['cover']) && isset($_FILES['cover']['tmp_name']) && '' !== $_FILES['cover']['tmp_name']) {
                     $movie->setCover(file_get_contents($_FILES['cover']['tmp_name']));
                 }

@@ -1,0 +1,89 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+
+    .form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 80%;
+        max-width: 900px;
+
+        .input-group,
+        .textarea-group,
+        .submit-group {
+            margin: 20px 1%;
+
+            input,
+            textarea {
+                padding: 10px;
+                border-radius: 10px;
+                color: $white;
+                background-color: transparent;
+                border: none;
+                border-bottom: 2px $orange solid;
+
+                &:focus {
+                    border-color: $white;
+                    outline: none;
+                }
+            }
+        }
+
+        .input-group {
+            width: 45%;
+
+            input {
+                max-width: 400px;
+                width: 80%;
+
+                &[type='date'] {
+                    color-scheme: dark;
+                }
+            }
+        }
+
+        .textarea-group {
+            width: 92%;
+
+            textarea {
+                width: 91%;
+            }
+        }
+
+        .input-file-group {
+            margin: 20px 1%;
+
+            input {
+                margin-left: 20px;
+            }
+        }
+
+        .submit-group {
+            width: 100%;
+
+            input {
+                max-width: 400px;
+                width: 80%;
+                color: $white;
+                background-color: transparent;
+                border: 2px $orange solid;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .check-form {
+        display: flex;
+        margin: 25px;
+        gap: 20px;
+
+        input {
+            width: 144px;
+            padding: 20px;
+            line-height: 2px;
+            color: $white;
+            cursor: pointer;
+        }
+    }
+}

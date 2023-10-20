@@ -1,4 +1,4 @@
-<?php $title = 'Votre liste'; ?>
+<?php $title = 'Ma liste'; ?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -8,31 +8,49 @@
 <body>
     <?php require_once(ROOT . '../views/includes/navbar.php'); ?>
 
-    <section id="movies">
-        <h1><?php echo $title ?></h1>
-        <?php
-        foreach ($movies as $movie) {
-            echo '
-                <div>
-                    <h2>' . $movie->getTitle() . '</h2>
-                    <p>' . $movie->getType() . '</p>
-                    <img src="" />
-                    <a href="/movies/' . $movie->getId() . '">Voir</a>
-            ';
-
-            if ($_SESSION['user']->getId() === $movie->getCreator()->getId()) {
+    <section id="my-list">
+        <h2><?php echo $title ?></h2>
+        <div class="container">
+            <?php
+            foreach ($movies as $movie) {
                 echo '
-                    <a href="/movies/update/' . $movie->getId() . '">Modifier</a>
-                    <a href="/movies/delete/' . $movie->getId() . '">Supprimer</a>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>' . $movie->getTitle() . '</h3>
+                            <p>' . $movie->getType() . '</p>
+                        </div>
+                ';
+
+                if ($movie->getCover()) {
+                    echo '
+                            <img src="data:image/png;base64,' . base64_encode($movie->getCover()) . '" />
+                    ';
+                } else {
+                    echo '
+                            <img src="/images/no-cover.png" />
+                    ';
+                }
+
+                echo '
+                        <div class="card-actions">
+                            <a href="/movies/' . $movie->getId() . '" class="btn-in-link"><div class="btn btn-default">Voir</div></a>
+                ';
+
+                if ($_SESSION['user']->getId() === $movie->getCreator()->getId()) {
+                    echo '
+                            <a href="/movies/update/' . $movie->getId() . '" class="btn-in-link"><div class="btn btn-edit">Modifier</div></a>
+                            <a href="/movies/delete/' . $movie->getId() . '" class="btn-in-link"><div class="btn btn-danger">Supprimer</div></a>
+                    ';
+                }
+
+                echo '
+                            <a href="/list/delete/' . $movie->getId() . '" class="btn-in-link"><div class="btn btn-warning">Retirer de ma liste</div></a>
+                        </div>
+                    </div>
                 ';
             }
-
-            echo '
-                    <a href="/list/delete/' . $movie->getId() . '">Retirer de ma liste</a>
-                </div>
-            ';
-        }
-        ?>
+            ?>
+        </div>
     </section>
 </body>
 

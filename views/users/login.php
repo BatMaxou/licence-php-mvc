@@ -9,9 +9,9 @@
     <?php require_once(ROOT . '../views/includes/navbar.php'); ?>
 
     <section id="login">
-        <h1>Connexion</h1>
+        <h2>Connexion</h2>
         <?php require_once(ROOT . '../views/includes/forms/userForm.php') ?>
-        <p><?php echo $error ?></p>
+        <p class="error"><?php echo $error ?></p>
     </section>
 </body>
 
